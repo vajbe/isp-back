@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const apiRoutes = require(__dirname + '/server/routes/api-routes');
-
+const dbConn = require(__dirname + "/server/config/creds");
 const app = express();
 
 
@@ -15,12 +15,11 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 
+app.use('/api',apiRoutes); 
 
-app.listen(port,() => {
-    console.log("Server has started...");
-});
+let url = `mongodb+srv://${dbConn.user}:${dbConn.password}@${dbConn.host}/${dbConn.db}?retryWrites=true`;
 
-mongoose.connect('mongodb+srv://admin:admin@cluster0-1ljgs.mongodb.net/master?retryWrites=true', {useNewUrlParser: true},(err)=>{
+mongoose.connect(url, {useNewUrlParser: true},(err)=>{
     if(!err){
         console.log("Successfully connected to DB");
     }
@@ -28,4 +27,6 @@ mongoose.connect('mongodb+srv://admin:admin@cluster0-1ljgs.mongodb.net/master?re
         console.log(err);
 });
 
-app.use('/api',apiRoutes); 
+app.listen(port,() => {
+    console.log("Server has started...");
+});
