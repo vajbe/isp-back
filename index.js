@@ -1,11 +1,22 @@
 //jshint esversion: 6
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 const apiRoutes = require(__dirname + '/server/routes/api-routes');
 
 const app = express();
 
-app.listen(5000,() => {
+
+let port = process.env.PORT || 5566;
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+app.use(bodyParser.json());
+
+
+app.listen(port,() => {
     console.log("Server has started...");
 });
 
@@ -17,4 +28,4 @@ mongoose.connect('mongodb+srv://admin:admin@cluster0-1ljgs.mongodb.net/master?re
         console.log(err);
 });
 
-app.use('/',apiRoutes);
+app.use('/api',apiRoutes);
