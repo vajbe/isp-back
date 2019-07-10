@@ -28,4 +28,4 @@ mongoose.connect('mongodb+srv://admin:admin@cluster0-1ljgs.mongodb.net/master?re
         console.log(err);
 });
 
-app.use('/api',apiRoutes);
+app.use('/api',apiRoutes); 
